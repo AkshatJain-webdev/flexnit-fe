@@ -56,9 +56,7 @@ export class ContentService {
 
     return this.http.get<PaginatedResponse<Content>>(
       environment.apiUrl.concat('/api/v1/shows'),
-      {
-        params,
-      }
+      { params, withCredentials: true }
     );
   }
 }

@@ -39,9 +39,15 @@ export class AuthService {
   }
 
   logout(): void {
-    this.http.post(environment.apiUrl.concat('/api/v1/auth/logout'), {}).subscribe(() => {
-      this.isAuthenticatedSubject.next(false);
-      this.router.navigate(['/auth']);
-    });
+    this.http
+      .post(
+        environment.apiUrl.concat('/api/v1/auth/logout'),
+        {},
+        { withCredentials: true }
+      )
+      .subscribe(() => {
+        this.isAuthenticatedSubject.next(false);
+        this.router.navigate(['/auth']);
+      });
   }
 }
