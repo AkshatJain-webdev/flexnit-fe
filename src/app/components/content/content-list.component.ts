@@ -47,7 +47,7 @@ export class ContentListComponent implements OnInit {
         this.totalItems = response.total;
       },
       error: (error) => {
-        this.toastr.error(error.message || 'Failed to load content');
+        this.toastr.error(error.error?.message || 'Failed to load content');
       },
     });
   }

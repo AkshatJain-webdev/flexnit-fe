@@ -17,7 +17,7 @@ export interface RegisterCredentials extends LoginCredentials {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(true);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(private router: Router, private http: HttpClient) {}
