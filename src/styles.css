@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@import 'ngx-toastr/toastr'
+
+/* .toast-container {
+@apply fixed top-4 right-4 z-50;
+}
+
+.toast {
+@apply bg-white shadow-lg rounded-lg p-4 mb-4 flex items-center;
+}
+
+.toast-error {
+@apply bg-red-100 border-l-4 border-red-500 text-red-700;
+}
+
+.toast-success {
+@apply bg-green-100 border-l-4 border-green-500 text-green-700;
+}
+
+.btn {
+@apply px-4 py-2 rounded-md font-medium transition-colors;
+}
+
+.btn-primary {
+@apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.input-field {
+@apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.error-text {
+@apply text-red-600 text-sm mt-1;
+} */

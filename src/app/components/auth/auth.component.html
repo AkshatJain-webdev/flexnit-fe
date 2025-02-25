@@ -1,0 +1,158 @@
+<div
+  class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
+    <div>
+      <h2 class="text-center text-3xl font-extrabold text-gray-900">
+        {{ isLogin ? "Sign in to your account" : "Create new account" }}
+      </h2>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <div class="space-y-4">
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-medium text-gray-700 pb-2"
+            >Email</label
+          >
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="
+              form.get('email')?.errors && form.get('email')?.touched
+            "
+          />
+          <div
+            *ngIf="form.get('email')?.errors?.['required'] && form.get('email')?.touched"
+            class="text-red-600 text-sm mt-1"
+          >
+            Email is required
+          </div>
+          <div
+            *ngIf="form.get('email')?.errors?.['email'] && form.get('email')?.touched"
+            class="text-red-600 text-sm mt-1"
+          >
+            Please enter a valid email
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="password"
+            class="block text-sm font-medium text-gray-700 pb-2"
+            >Password</label
+          >
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="
+              form.get('password')?.errors && form.get('password')?.touched
+            "
+          />
+          <div
+            *ngIf="form.get('password')?.errors?.['required'] && form.get('password')?.touched"
+            class="text-red-600 text-sm mt-1"
+          >
+            Password is required
+          </div>
+          <div
+            *ngIf="form.get('password')?.errors?.['minlength'] && form.get('password')?.touched"
+            class="text-red-600 text-sm mt-1"
+          >
+            Password must be at least 6 characters
+          </div>
+        </div>
+
+        <ng-container *ngIf="!isLogin">
+          <div>
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-gray-700 pb-2"
+              >Confirm Password</label
+            >
+            <input
+              id="confirmPassword"
+              type="password"
+              formControlName="confirmPassword"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="
+                form.get('confirmPassword')?.errors &&
+                form.get('confirmPassword')?.touched
+              "
+            />
+            <div
+              *ngIf="form.get('confirmPassword')?.errors?.['required'] && form.get('confirmPassword')?.touched"
+              class="text-red-600 text-sm mt-1"
+            >
+              Please confirm your password
+            </div>
+            <div
+              *ngIf="form.get('confirmPassword')?.errors?.['passwordMismatch']"
+              class="text-red-600 text-sm mt-1"
+            >
+              Passwords do not match
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="age"
+              class="block text-sm font-medium text-gray-700 pb-2"
+              >Age</label
+            >
+            <input
+              id="age"
+              type="number"
+              formControlName="age"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="
+                form.get('age')?.errors && form.get('age')?.touched
+              "
+            />
+            <div
+              *ngIf="form.get('age')?.errors?.['required'] && form.get('age')?.touched"
+              class="text-red-600 text-sm mt-1"
+            >
+              Age is required
+            </div>
+            <div
+              *ngIf="form.get('age')?.errors?.['min'] && form.get('age')?.touched"
+              class="text-red-600 text-sm mt-1"
+            >
+              You must be at least 13 years old
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-colors w-full"
+          [disabled]="form.invalid || isLoading"
+        >
+          {{ isLogin ? "Sign in" : "Register" }}
+        </button>
+      </div>
+
+      <div class="text-center">
+        <button
+          type="button"
+          class="text-blue-600 hover:text-blue-800"
+          (click)="toggleMode()"
+        >
+          {{
+            isLogin
+              ? "Need an account? Register"
+              : "Already have an account? Sign in"
+          }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

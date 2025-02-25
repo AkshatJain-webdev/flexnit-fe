@@ -1,0 +1,64 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6">
+      <div class="flex justify-between items-start mb-6">
+        <h2 class="text-2xl font-bold">{{ content.title }}</h2>
+        <button
+          (click)="close.emit()"
+          class="text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <h3 class="font-semibold text-gray-700">Type</h3>
+            <p>{{ content.type === 1 ? 'Movie' : 'TV Show' }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700">Release Year</h3>
+            <p>{{ content.release_year }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700">Rating</h3>
+            <p>{{ content.rating }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700">Duration</h3>
+            <p>{{ content.duration }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700">Date Added</h3>
+            <p>{{ content.date_added }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700">Country</h3>
+            <p>{{ content.country }}</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-gray-700">Director</h3>
+          <p>{{ content.director }}</p>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-gray-700">Cast</h3>
+          <p>{{ content.cast.join(', ') }}</p>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-gray-700">Categories</h3>
+          <p>{{ getNormalizedArray(content.categories, 'name').join(', ') }}</p>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-gray-700">Description</h3>
+          <p class="text-gray-600">{{ content.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

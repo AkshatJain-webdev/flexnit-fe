@@ -1,0 +1,171 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Search and Filters -->
+  <div class="mb-8 space-y-4">
+    <div class="flex gap-4">
+      <input
+        type="text"
+        [(ngModel)]="filters.search"
+        (ngModelChange)="onFiltersChange()"
+        placeholder="Search titles..."
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
+      />
+
+      <select
+        [(ngModel)]="filters.type"
+        (ngModelChange)="onFiltersChange()"
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
+      >
+        <option value="">All</option>
+        <option value="1">Movies</option>
+        <option value="2">TV Shows</option>
+      </select>
+
+      <select
+        [(ngModel)]="filters.sortBy"
+        (ngModelChange)="onFiltersChange()"
+        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+      >
+        <option value="" disabled>Sort by...</option>
+        <option value="release_year">Release Year</option>
+        <option value="title">Title</option>
+      </select>
+
+      <button
+        *ngIf="filters.sortBy"
+        (click)="toggleSortDirection()"
+        class="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-colors"
+      >
+        {{ filters.sortDirection === "asc" ? "↑" : "↓" }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Table -->
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Type
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Title
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Director
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Cast
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Release Year
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Rating
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Duration
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
+          >
+            Categories
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr
+          *ngFor="let item of content"
+          (click)="openDetail(item)"
+          class="hover:bg-gray-50 cursor-pointer"
+        >
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ item.type === 1 ? "Movie" : "TV Show" }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ item.title }}</td>
+          <td class="px-6 py-4 whitespace-nowrap relative group">
+            <span>{{ getTruncatedList(item.director.split(", ")) }}</span>
+            <div
+              *ngIf="!!item.director && item.director.split(', ').length > 2"
+              class="hidden group-hover:block absolute z-10 bg-white p-2 rounded shadow-lg mt-1 w-48 break-words whitespace-normal"
+              [style.transition-delay]="'500ms'"
+            >
+              {{ item.director }}
+            </div>
+          </td>
+
+          <td class="px-6 py-4 whitespace-nowrap relative group">
+            <span>{{ getTruncatedList(item.cast) }}</span>
+            <div
+              *ngIf="item.cast != null && item.cast.length > 2"
+              class="hidden group-hover:block absolute z-10 bg-white p-2 rounded shadow-lg mt-1 w-48 break-words whitespace-normal"
+              [style.transition-delay]="'500ms'"
+            >
+              {{ item.cast.join(", ") }}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ item.release_year }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ item.rating }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ item.duration }}</td>
+          <td class="px-6 py-4 whitespace-nowrap relative group">
+            <span>{{ getTruncatedList(getNormalizedArray(item.categories, 'name')) }}</span>
+            <div
+              *ngIf="item.categories != null && item.categories.length > 2"
+              class="hidden group-hover:block absolute z-10 bg-white p-2 rounded shadow-lg mt-1 w-48 break-words whitespace-normal"
+              [style.transition-delay]="'500ms'"
+            >
+              {{ getNormalizedArray(item.categories, 'name').join(", ") }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-4 flex items-center justify-between">
+    <div>
+      <p class="text-sm text-gray-700">
+        Showing {{ (filters.page - 1) * filters.pageSize + 1 }} to
+        {{ Math.min(filters.page * filters.pageSize, totalItems) }} of
+        {{ totalItems }} results
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <button
+        class="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-colors"
+        [disabled]="filters.page === 1"
+        (click)="changePage(filters.page - 1)"
+      >
+        Previous
+      </button>
+      <button
+        class="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-colors"
+        [disabled]="filters.page * filters.pageSize >= totalItems"
+        (click)="changePage(filters.page + 1)"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-content-detail
+  *ngIf="selectedContent"
+  [content]="selectedContent"
+  (close)="selectedContent = null"
+></app-content-detail>
